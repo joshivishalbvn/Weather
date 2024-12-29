@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #56CCF2, #2F80ED);
+    /* background: linear-gradient(135deg, #1b4654, #2F80ED);    */
+    min-height: 100vh;
+    color: white;
+    overflow-x: hidden;
+}
+
+.hourly-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    font-size: 22px;
+}
+
+.back-btn {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.hourly-weather-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;  /* Ensures cards are evenly distributed */
+    padding: 20px;
+    gap: 20px; /* Ensures consistent gap between all cards */
+}
+
+.hourly-weather-item {
+    background-color: rgba(255, 255, 255, 0.4);
+    width: calc(100% / 6 - 20px); /* 6 cards per row */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.hourly-weather-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hourly-weather-item img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+    color: black;
+}
+
+.hourly-weather-item:hover img {
+    transform: rotate(15deg);
+}
+
+.time {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black;
+}
+
+.temp {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FF8A00;
+}
+
+.condition {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Modal Styles */
+.weather-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    color: #333;
+    text-align: center;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Modal Header */
+.modal-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.modal-info {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows wrapping of items if they overflow */
+    gap: 20px;
+    /* Adds space between items */
+    justify-content: space-between;
+    /* Distributes items with space between them */
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+
+.modal-info .info-item {
+    flex: 1 1 22%;
+    /* Make each info-item take up approximately 22% of the row */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-info .info-item span {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.modal-info .info-item .value {
+    color: #FF8A00;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.modal-info .info-item img {
+    width: 30px;
+    height: 30px;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+    .hourly-weather-item {
+        width: calc(100% / 3 - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .hourly-weather-list {
+        justify-content: center;
+    }
+
+    .hourly-weather-item {
+        width: 100px;
+    }
+
+    .modal-content {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hourly-weather-item {
+        width: calc(100% / 2 - 20px); 
+    }
+}
+
+.prev-btn {
+    background-color: #FF8A00; 
+    border-color: #FF8A00;
+    padding: 7px;
+  }
+  
+  .prev-btn:hover {
+    background-color: rgba(255, 138, 0, 0.7);
+  }
+  
+  /* Custom styles for Next button */
+  .next-btn {
+    background-color: #2F80ED;
+    border-color: #2F80ED;
+    padding: 7px;
+  }
+  
+  .next-btn:hover {
+    background-color: rgba(47, 128, 237, 0.7);
+  }
+
+  .back-btn {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .back-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Customize color */
+  }

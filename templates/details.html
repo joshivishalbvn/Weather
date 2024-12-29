@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hourly Weather</title>
+  <link rel="stylesheet" href="{% static 'css/details.css' %}">
+</head>
+
+<body>
+  <div class="hourly-weather-container">
+      <div class="hourly-header">
+        <a href="{% url 'home' %}"><button class="back-btn">← Back</button></a>
+        <h1>{{city_name}}'s Weather for <span id="selected-day">{{ day_of_week }}, {{ date_obj|date:"b d"|capfirst }}</span></h1>
+        <!-- Previous Date Button -->
+        {% if previous_date_url  %}
+          <button onclick="window.location.href='{{ previous_date_url }}'" class="prev-btn nav-btn">← {{previous_date}}</button>
+        {% endif %}
+        
+        <!-- Next Date Button -->
+        {% if next_date_url %}
+        <button onclick="window.location.href='{{ next_date_url }}'" class="next-btn nav-btn">{{next_date}} →</button>
+        {% endif %}
+      </div>
+
+    <section class="hourly-weather-list">
+    </section>
+
+    <div id="weather-modal" class="weather-modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div id="modal-details"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const hourlyWeatherData = {{ hourly_data|safe }}
+    var cityName = "{{ city_name|escapejs }}"
+  </script>
+  <script src="{%  static 'js/details.js' %}"></script>
+</body>
+
+</html>

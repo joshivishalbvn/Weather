@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>Compass Starter by Ariona, Rian</title>
+
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+		<link href="{% static 'fonts/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+		<!-- Loading main css file -->
+		<link rel="stylesheet" href="{% static 'style.css' %}">
+
+		<!-- for select 2  -->
+		<link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/main.css' %}">
+		{{ form.media.css }} 
+		<!-- for select 2  -->
+	</head>
+
+	<body>
+		<div class="site-content">
+			<div class="site-header">
+				<div class="container">
+					<a href="index.html" class="branding">
+						<img src="images/logo.png" alt="" class="logo">
+						<div class="logo-type">
+							<h1 class="site-title">Weather</h1>
+							<small class="site-description">Check Weather</small>
+						</div>
+					</a>
+
+					<!-- Default snippet for navigation -->
+					<div class="main-navigation">
+						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+					</div> <!-- .main-navigation -->
+
+					<div class="mobile-navigation"></div>
+
+				</div>
+			</div> <!-- .site-header -->
+
+			<div class="hero" data-bg-image="{% static 'images/weather_banner.avif' %}">
+				<div class="container">
+					<div class="find-location-form">
+						<form method="post" class="find-location">
+							{% csrf_token %}
+							
+							<div class="form-group row">
+								<div class="col-md-10">
+									{{ form.city }}
+								</div>
+								<div class="col-md-2">
+									<button type="button" id="find-location-btn" class="btn btn-primary w-100">
+										Find
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="forecast-table">
+				<div class="container">
+					<div class="forecast-container">
+						<div class="today forecast">
+							<div class="forecast-header">
+								<div class="day" id="0_day_name">{{today_name}}</div>
+								<div class="date">{{formatted_date}}</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="location" id="city_id">Finding Location</div>
+								<div class="degree">
+									<div class="num" id="0_max_temp_id">0<sup>o</sup>C</div>
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="">
+									</div>	
+								</div>
+								<span><img src="{% static 'images/icon-umberella.png' %}" alt=""><span id="0_humidity">20%</span></span>
+								<span><img src="{% static 'images/icon-wind.png' %}" alt=""> <span id="0_wind_speed">18 km/h</span></span>
+								<span><img src="{% static 'images/icon-compass.png' %}" alt=""><span id="0_wind_direction">East</span></span>
+							</div>
+						</div>
+						<div class="forecast" >
+							<div class="forecast-header">
+								<div class="day" id="1_day_name">Tuesday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+								</div>
+								<div class="degree"><span id="1_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="1_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day" id="2_day_name">Wednesday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+								</div>
+								<div class="degree"><span id="2_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="2_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+						<div class="forecast" >
+							<div class="forecast-header">
+								<div class="day" id="3_day_name">Thursday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+								</div>
+								<div class="degree"><span id="3_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="3_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day" id="4_day_name">Friday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+								</div>
+								<div class="degree"><span id="4_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="4_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+						<div class="forecast" >
+							<div class="forecast-header">
+								<div class="day" id="5_day_name">Saturday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.sv' %}g" alt="" width=48>
+								</div>
+								<div class="degree"><span id="5_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="5_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+						<div class="forecast">
+							<div class="forecast-header">
+								<div class="day" id="6_day_name">Sunday</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="forecast-icon">
+									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+								</div>
+								<div class="degree"><span id="6_max_temp_id">18</span><sup>o</sup>C</div>
+								<small><span id="6_min_temp">18</span><sup>o</sup></small>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer class="site-footer">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							<form action="#" class="subscribe-form">
+								<input type="text" placeholder="Enter your email to subscribe...">
+								<input type="submit" value="Subscribe">
+							</form>
+						</div>
+						<div class="col-md-3 col-md-offset-1">
+							<div class="social-links">
+								<a href="#"><i class="fa fa-facebook"></i></a>
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+								<a href="#"><i class="fa fa-pinterest"></i></a>
+							</div>
+						</div>
+					</div>
+
+					<p class="colophon">Copyright 2014 Company name. Designed by Themezy. All rights reserved</p>
+				</div>
+			</footer> <!-- .site-footer -->
+		</div>
+
+		
+		
+		<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+		<script src="{% static 'js/plugins.js' %}"></script>
+		<script src="{% static 'js/app.js' %}"></script>
+        <script src="{%  static 'js/get_csrf.js' %}"></script>
+        <script src="{%  static 'js/web_socket.js' %}"></script>
+        <script src="{%  static 'js/common.js' %}"></script>
+		 <!-- for select 2  -->
+		 {{ form.media.js }}
+		 <!-- for select 2  -->
+	</body>
+
+	<script>
+		$(document).ready(function() {
+
+			function sanitizeGroupName(cityName) {
+				return cityName.replace(/[^a-zA-Z0-9._-]/g, '_');
+			}
+			
+			
+			$('.forecast').on('click', function() {
+				var date = $(this).data('date');
+				if (typeof date === 'undefined' || date === null) {
+					alert('Please wait for the data to load.');
+				} else {
+					var encodedDate = encodeURIComponent(date);  
+					var cityElement = document.getElementById('id_city');
+					try {
+						var city = cityElement.options[cityElement.selectedIndex].text;
+					} catch (error) {
+						var city = document.getElementById('city_id').innerText;
+					}
+					var url = `details/${city}/${encodedDate}/hourly-weather-forecast`
+					window.location.href = url; 
+				}
+			});
+
+			$('#find-location-btn').on('click', function() {
+				var city = $('#id_city').val();
+	
+				if (city) {
+					$.ajax({
+						url: '{% url "update_weather" %}',  
+						type: 'POST',
+						data: {
+							'csrfmiddlewaretoken': '{{ csrf_token }}',
+							'city': city,
+						},
+						success: function(response) {
+							const cityElement = document.getElementById('city_id');
+							cityElement.textContent = response.location_info.city;
+							console.log("+++++++++++++",cityElement.textContent)
+							// Check if there's an existing WebSocket connection
+							
+							if (ws && ws.readyState === WebSocket.OPEN) {
+								console.log("WebSocket is already connected.");
+								ws.close();  
+								console.log("Previous WebSocket connection closed.");
+							}
+							connectWebSocket(response.location_info.city)
+							setWeatherData(response.weather_data)
+						},
+						error: function(xhr, errmsg, err) {
+							console.log("Error: " + errmsg);
+						}
+					});
+				} else {
+					alert("Please select a city.");
+				}
+			});
+		});
+	</script>
+	
+
+</html>
