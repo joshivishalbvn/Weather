@@ -19,7 +19,7 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     'get_wether_data': {
         'task': 'app_modules.weather_app.tasks.get_weather_data',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(minutes=30),
     },
 }
 

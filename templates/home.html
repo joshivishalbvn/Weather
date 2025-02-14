@@ -6,7 +6,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
 		
-		<title>Compass Starter by Ariona, Rian</title>
+		<title>Weather</title>
 
 		<!-- Loading third party fonts -->
 		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
@@ -24,168 +24,168 @@
 
 	<body>
 		<div class="site-content">
-			<div class="site-header">
-				<div class="container">
-					<a href="index.html" class="branding">
-						<img src="images/logo.png" alt="" class="logo">
-						<div class="logo-type">
+			
+			<div data-bg-image="{% static 'images/weather_banner.avif' %}" style="min-height: 631px; height: 100%;background-repeat: no-repeat; background-size: 100% 100%; background-position: center;">
+				<div class="site-header">
+					<div class="container">
+						<a href="{% url 'home' %}" class="branding">
 							<h1 class="site-title">Weather</h1>
-							<small class="site-description">Check Weather</small>
-						</div>
-					</a>
-
-					<!-- Default snippet for navigation -->
-					<div class="main-navigation">
-						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
-					</div> <!-- .main-navigation -->
-
-					<div class="mobile-navigation"></div>
-
-				</div>
-			</div> <!-- .site-header -->
-
-			<div class="hero" data-bg-image="{% static 'images/weather_banner.avif' %}">
-				<div class="container">
-					<div class="find-location-form">
-						<form method="post" class="find-location">
-							{% csrf_token %}
-							
-							<div class="form-group row">
-								<div class="col-md-10">
-									{{ form.city }}
-								</div>
-								<div class="col-md-2">
-									<button type="button" id="find-location-btn" class="btn btn-primary w-100">
-										Find
-									</button>
-								</div>
-							</div>
-						</form>
+						</a>
 					</div>
 				</div>
-			</div>
-			<div class="forecast-table">
-				<div class="container">
-					<div class="forecast-container">
-						<div class="today forecast">
-							<div class="forecast-header">
-								<div class="day" id="0_day_name">{{today_name}}</div>
-								<div class="date">{{formatted_date}}</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="location" id="city_id">Finding Location</div>
-								<div class="degree">
-									<div class="num" id="0_max_temp_id">0<sup>o</sup>C</div>
-									<div class="forecast-icon">
-										<img src="{% static 'images/icons/icon-1.svg' %}" alt="">
-									</div>	
-								</div>
-								<span><img src="{% static 'images/icon-umberella.png' %}" alt=""><span id="0_humidity">20%</span></span>
-								<span><img src="{% static 'images/icon-wind.png' %}" alt=""> <span id="0_wind_speed">18 km/h</span></span>
-								<span><img src="{% static 'images/icon-compass.png' %}" alt=""><span id="0_wind_direction">East</span></span>
-							</div>
-						</div>
-						<div class="forecast" >
-							<div class="forecast-header">
-								<div class="day" id="1_day_name">Tuesday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree"><span id="1_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="1_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day" id="2_day_name">Wednesday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree"><span id="2_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="2_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast" >
-							<div class="forecast-header">
-								<div class="day" id="3_day_name">Thursday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree"><span id="3_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="3_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day" id="4_day_name">Friday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree"><span id="4_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="4_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast" >
-							<div class="forecast-header">
-								<div class="day" id="5_day_name">Saturday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.sv' %}g" alt="" width=48>
-								</div>
-								<div class="degree"><span id="5_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="5_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-						<div class="forecast">
-							<div class="forecast-header">
-								<div class="day" id="6_day_name">Sunday</div>
-							</div> <!-- .forecast-header -->
-							<div class="forecast-content">
-								<div class="forecast-icon">
-									<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
-								</div>
-								<div class="degree"><span id="6_max_temp_id">18</span><sup>o</sup>C</div>
-								<small><span id="6_min_temp">18</span><sup>o</sup></small>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
 
-			<footer class="site-footer">
-				<div class="container">
-					<div class="row">
-						<div class="col-md-8">
-							<form action="#" class="subscribe-form">
-								<input type="text" placeholder="Enter your email to subscribe...">
-								<input type="submit" value="Subscribe">
+				<div class="hero" >
+					<div class="container">
+						<div class="find-location-form">
+
+							<form method="post" class="find-location">
+								{% csrf_token %}
+								
+								<div class="form-group row">
+									<div class="col-md-10">
+										{{ form.city }}
+									</div>
+									<div class="col-md-2">
+										<button type="button" id="find-location-btn" class="btn btn-primary w-100">
+											<b>Find</b>
+										</button>
+									</div>
+								</div>
 							</form>
+
+							<div id="loader" class="loader" style="display: none;">
+								<img src="{% static 'images/loader/loader.gif' %}" alt="Loading...">
+							</div>
+
 						</div>
-						<div class="col-md-3 col-md-offset-1">
-							<div class="social-links">
-								<a href="#"><i class="fa fa-facebook"></i></a>
-								<a href="#"><i class="fa fa-twitter"></i></a>
-								<a href="#"><i class="fa fa-google-plus"></i></a>
-								<a href="#"><i class="fa fa-pinterest"></i></a>
+					</div>
+				</div>
+
+				<div class="forecast-table">
+					<div class="container">
+						<div class="forecast-container">
+							<div class="today forecast">
+								<div class="forecast-header">
+									<div class="day" id="0_day_name">{{today_name}}</div>
+									<div class="date">{{formatted_date}}</div>
+								</div>
+								<div class="forecast-content">
+									<div class="location" id="city_id">Finding Location</div>
+									<div class="degree">
+										<div class="num" id="0_max_temp_id">0<sup>o</sup>C</div>
+										<div class="forecast-icon">
+											<img src="{% static 'images/icons/icon-1.svg' %}" alt="">
+										</div>	
+									</div>
+									<span><img src="{% static 'images/icon-umberella.png' %}" alt=""><span id="0_humidity">20%</span></span>
+									<span><img src="{% static 'images/icon-wind.png' %}" alt=""> <span id="0_wind_speed">18 km/h</span></span>
+									<span><img src="{% static 'images/icon-compass.png' %}" alt=""><span id="0_wind_direction">East</span></span>
+								</div>
+							</div>
+							<div class="forecast" >
+								<div class="forecast-header">
+									<div class="day" id="1_day_name">Tuesday</div>
+								</div> 
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width="48">
+									</div>
+									<div class="degree"><span id="1_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="1_min_temp">18</span><sup>o</sup></small>
+								</div>
+							</div>
+							<div class="forecast">
+								<div class="forecast-header">
+									<div class="day" id="2_day_name">Wednesday</div>
+								</div> 
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+									</div>
+									<div class="degree"><span id="2_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="2_min_temp">18</span><sup>o</sup></small>
+								</div>
+							</div>
+							<div class="forecast" >
+								<div class="forecast-header">
+									<div class="day" id="3_day_name">Thursday</div>
+								</div> 
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+									</div>
+									<div class="degree"><span id="3_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="3_min_temp">18</span><sup>o</sup></small>
+								</div>
+							</div>
+							<div class="forecast">
+								<div class="forecast-header">
+									<div class="day" id="4_day_name">Friday</div>
+								</div> 
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+									</div>
+									<div class="degree"><span id="4_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="4_min_temp">18</span><sup>o</sup></small>
+								</div>
+							</div>
+							<div class="forecast" >
+								<div class="forecast-header">
+									<div class="day" id="5_day_name">Saturday</div>
+								</div>
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.sv' %}g" alt="" width=48>
+									</div>
+									<div class="degree"><span id="5_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="5_min_temp">18</span><sup>o</sup></small>
+								</div>
+							</div>
+							<div class="forecast">
+								<div class="forecast-header">
+									<div class="day" id="6_day_name">Sunday</div>
+								</div>
+								<div class="forecast-content">
+									<div class="forecast-icon">
+										<img src="{% static 'images/icons/icon-1.svg' %}" alt="" width=48>
+									</div>
+									<div class="degree"><span id="6_max_temp_id">18</span><sup>o</sup>C</div>
+									<small><span id="6_min_temp">18</span><sup>o</sup></small>
+								</div>
 							</div>
 						</div>
 					</div>
-
-					<p class="colophon">Copyright 2014 Company name. Designed by Themezy. All rights reserved</p>
 				</div>
-			</footer> <!-- .site-footer -->
+				
+			</div>
+
+			
+			
 		</div>
 
-		
+		<footer class="site-footer">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
+						<form action="#" class="subscribe-form">
+							<input type="text" placeholder="Enter your email to subscribe...">
+							<input type="submit" value="Subscribe">
+						</form>
+					</div>
+					<div class="col-md-3 col-md-offset-1">
+						<div class="social-links">
+							<a href="#"><i class="fa fa-facebook"></i></a>
+							<a href="#"><i class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-google-plus"></i></a>
+							<a href="#"><i class="fa fa-pinterest"></i></a>
+						</div>
+					</div>
+				</div>
+
+				<p class="colophon">Copyright 2014 Company name. Designed by Themezy. All rights reserved</p>
+			</div>
+		</footer> 
 		
 		<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 		<script src="{% static 'js/plugins.js' %}"></script>
@@ -225,8 +225,10 @@
 
 			$('#find-location-btn').on('click', function() {
 				var city = $('#id_city').val();
+				
 	
 				if (city) {
+					$('#loader').show();
 					$.ajax({
 						url: '{% url "update_weather" %}',  
 						type: 'POST',
@@ -235,17 +237,19 @@
 							'city': city,
 						},
 						success: function(response) {
+							$('#loader').hide();
 							const cityElement = document.getElementById('city_id');
 							cityElement.textContent = response.location_info.city;
 							console.log("+++++++++++++",cityElement.textContent)
-							// Check if there's an existing WebSocket connection
+							var city_name = cityElement.textContent.replace(/\s+/g, '_'); 
+							console.log("city_name",city_name)
 							
 							if (ws && ws.readyState === WebSocket.OPEN) {
 								console.log("WebSocket is already connected.");
 								ws.close();  
 								console.log("Previous WebSocket connection closed.");
 							}
-							connectWebSocket(response.location_info.city)
+							connectWebSocket(city_name)
 							setWeatherData(response.weather_data)
 						},
 						error: function(xhr, errmsg, err) {
@@ -259,5 +263,4 @@
 		});
 	</script>
 	
-
 </html>

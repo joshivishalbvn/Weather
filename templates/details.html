@@ -12,17 +12,26 @@
 <body>
   <div class="hourly-weather-container">
       <div class="hourly-header">
+        
         <a href="{% url 'home' %}"><button class="back-btn">← Back</button></a>
         <h1>{{city_name}}'s Weather for <span id="selected-day">{{ day_of_week }}, {{ date_obj|date:"b d"|capfirst }}</span></h1>
-        <!-- Previous Date Button -->
-        {% if previous_date_url  %}
-          <button onclick="window.location.href='{{ previous_date_url }}'" class="prev-btn nav-btn">← {{previous_date}}</button>
-        {% endif %}
-        
-        <!-- Next Date Button -->
-        {% if next_date_url %}
-        <button onclick="window.location.href='{{ next_date_url }}'" class="next-btn nav-btn">{{next_date}} →</button>
-        {% endif %}
+
+        <div class="week-data">
+          {% for day_name, day_info in week_data.items %}
+              {% if not day_info.is_current_day %}
+                <a href="{{ day_info.url }}">
+                    <div class="day">
+                        <span><b>{{ day_name }}</b></span>
+                    </div>
+                </a>
+              {% else %}
+                <div class="day disabled">
+                    <span><b>{{ day_name }}</b></span>
+                </div>
+              {% endif %}
+          {% endfor %}
+      </div>
+      
       </div>
 
     <section class="hourly-weather-list">

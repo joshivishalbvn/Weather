@@ -28,6 +28,7 @@ THIRDPARTY_APPS = [
     "django_celery_beat",
     "django_celery_results",
     "django_select2",
+    # "sslserver",
 ]
 
 LOCAL_APPS = [
@@ -71,22 +72,34 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [('redis', 6379)],
         },
     },
 }
 
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME":  os.environ.get("DATABASE_NAME"),
+#         "USER":  os.environ.get("DATABASE_USER"),
+#         "PASSWORD":  os.environ.get("DATABASE_PASSWORD"),
+#         "HOST":  os.environ.get("DATABASE_HOST"),
+#         "PORT":  os.environ.get("DATABASE_PORT"),
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME":  os.environ.get("DATABASE_NAME"),
-        "USER":  os.environ.get("DATABASE_USER"),
-        "PASSWORD":  os.environ.get("DATABASE_PASSWORD"),
-        "HOST":  os.environ.get("DATABASE_HOST"),
-        "PORT":  os.environ.get("DATABASE_PORT"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'weather'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': 'db',  
+        'PORT': '5432',
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -128,8 +141,8 @@ SUPER_USER = {
 
 
 # <-----------Celery----------->
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", default="redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", default="redis://localhost:6379/0")
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", default="redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", default="redis://redis:6379/0")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_ACCEPT_CONTENT = ["application/json"]
@@ -144,14 +157,14 @@ DJANGO_CELERY_BEAT_TZ_AWARE=False
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        'LOCATION': 'redis://redis:6379/1',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     'select2': {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+         'LOCATION': 'redis://redis:6379/2',
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -161,7 +174,7 @@ CACHES = {
 SELECT2_CACHE_BACKEND = 'default'
 # <-------------------------------- Select 2 ---------------------------------->
 
-OPEN_WEATHER_MAP_API_KEY = ""
-GEO_APIFY_API_KEY = ""
+OPEN_WEATHER_MAP_API_KEY = "4ab7025243672571567735d9bc0232d5"
+GEO_APIFY_API_KEY = "b98d2839d16440749d9ce0dba844b317"
 
 ALLOWED_HOSTS = ['*']

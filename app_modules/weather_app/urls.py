@@ -1,5 +1,10 @@
 from django.urls import path
-from .views import HomeView, LocationByCoordinatesView,UpdateWeatherDataView,WeatherDetailsView
+from .views import (
+    HomeView,
+    LocationByCoordinatesView,
+    UpdateWeatherDataView,
+    WeatherDetailsView,
+)
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),

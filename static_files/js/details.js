@@ -1,13 +1,11 @@
-// Utility function to convert time to 12-hour format
 function convertTo12HourFormat(time) {
   const hour = parseInt(time.substring(0, 2));
   const minute = time.substring(3, 5);
-  let hour12 = hour % 12 || 12; // Convert to 12-hour format
+  let hour12 = hour % 12 || 12; 
   const ampm = hour < 12 ? 'AM' : 'PM';
   return { time12: `${hour12}:${minute} ${ampm}`, hour, minute };
 }
 
-// Utility function to get time of day and image name
 function getTimeOfDay(hour) {
   let timeOfDay, image_name;
   if (hour >= 6 && hour < 12) {
@@ -26,15 +24,14 @@ function getTimeOfDay(hour) {
   return { timeOfDay, image_name };
 }
 
-// Function to load hourly weather
 function loadHourlyWeather() {
   console.log(cityName);
   const weatherListContainer = document.querySelector('.hourly-weather-list');
   weatherListContainer.innerHTML = '';
 
   hourlyWeatherData.time.forEach((time, index) => {
-    const { time12, hour } = convertTo12HourFormat(time); // Convert time to 12-hour format
-    const { timeOfDay, image_name } = getTimeOfDay(hour); // Get time of day and image name
+    const { time12, hour } = convertTo12HourFormat(time); 
+    const { timeOfDay, image_name } = getTimeOfDay(hour); 
 
     const condition = hourlyWeatherData.weather_description[index] || 'Unknown';
     const temperature = hourlyWeatherData.temperature_2m[index];
@@ -59,7 +56,6 @@ function loadHourlyWeather() {
   });
 }
 
-// Function to open modal and display weather details
 function openModal(index) {
   const modal = document.getElementById('weather-modal');
   const modalDetails = document.getElementById('modal-details');
@@ -73,8 +69,8 @@ function openModal(index) {
   const humidity = hourlyWeatherData.relative_humidity_2m[index];
   const dewPoint = hourlyWeatherData.dew_point_2m[index];
 
-  const { time12, hour } = convertTo12HourFormat(time); // Convert time to 12-hour format
-  const { timeOfDay, image_name } = getTimeOfDay(hour); // Get time of day and image name
+  const { time12, hour } = convertTo12HourFormat(time); 
+  const { timeOfDay, image_name } = getTimeOfDay(hour); 
 
   const iconUrl = `/static/images/icons/${image_name}`;
 
@@ -126,13 +122,11 @@ function openModal(index) {
   modal.style.display = "block";
 }
 
-// Function to close modal
 function closeModal() {
   const modal = document.getElementById('weather-modal');
   modal.style.display = "none";
 }
 
-// Close modal if clicked outside
 window.onclick = function (event) {
   const modal = document.getElementById('weather-modal');
   if (event.target === modal) {

@@ -13,6 +13,7 @@ def get_weather_data():
     all_cities = City.objects.values_list("name",flat=True)
     for city in all_cities:
         print('\033[91m'+'city: ' + '\033[92m', city)
+        city_name = city.replace(" ", "_")
         forecast, created = Forecast.objects.get_or_create(
             city=city,
             latitude=22.9965824,  
@@ -44,7 +45,7 @@ def get_weather_data():
                 precipitation = day_data['precipitation']
                 windspeed_max = day_data['windspeed_max']
                 wind_direction = day_data['wind_direction']
-                new_obj = DayForecast.objects.create(
+                DayForecast.objects.create(
                     forecast=forecast,
                     date=day_date,
                     day_name=day_name,
@@ -56,12 +57,12 @@ def get_weather_data():
                 )
                 data = {}
                 # data["temperature"] = max_temp
-                data["temperature"] = random.randint(0, 100)
+                data["temperature"] = random.randint(0, 35)
                 data["wind_speed"] = windspeed_max
                 data["wind_direction"] = wind_direction
                 print('\033[91m'+'location["city"]: ' + '\033[92m', city)
                 broadcast_websocket_message.delay(
-                    group_name="CITY_{}".format(city),
+                    group_name="CITY_{}".format(city_name),
                     payload=data
                 )
                 print(f"Saved forecast for {day_data['day_name']} ({day_data['date']})")

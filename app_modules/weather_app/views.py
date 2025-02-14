@@ -2,15 +2,14 @@ import json
 import datetime
 from .models import City
 from .forms import CityForm
-from django.views import View
 from django.urls import reverse
 from django.shortcuts import render
+from django.core.cache import cache
 from django.http import JsonResponse
-from django.views.generic import TemplateView 
+from django.views.generic import TemplateView ,View
 from app_modules.weather_app.utils import (
-    get_7_day_forecast, 
     get_hourly_data_by_date, 
-    get_location_from_coordinates,
+    get_weather_and_location,
     get_coordinates_from_city_name,
 )
 
@@ -19,43 +18,88 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
     def get_context_data(self, **kwargs):
+        # cache.clear()
         ctx =  super().get_context_data(**kwargs)
+        selected_city = self.request.session.get('selected_city', None)
         today = datetime.datetime.today()
-        ctx["form"] = CityForm
+        city_obj = City.objects.filter(name=selected_city).last()
+        ctx["form"] = CityForm(initial={'city': city_obj})
         ctx["cities"] = City.objects.all()
         ctx["today_name"] = today.strftime('%A')
         ctx["formatted_date"] = today.strftime("%d %b")
         return ctx
 
+class UpdateWeatherDataView(View):
+
+    def post(self, request):
+        form = CityForm(request.POST)
+        
+        if form.is_valid():
+            try:
+                city_name = form.cleaned_data['city'].name
+                request.session['selected_city'] = city_name
+
+                latitude, longitude = get_coordinates_from_city_name(city_name)
+
+                weather_data, location_info = get_weather_and_location(latitude, longitude,timeout=12)
+
+                data = {
+                    "weather_data": weather_data,
+                    "location_info": location_info
+                }
+                return JsonResponse(data)
+            except Exception as e:
+                print('\033[91m'+'e: ' + '\033[92m', e)
+                pass
+           
+        else:
+            return JsonResponse({"error": "Invalid form data"}, status=400)
+        
 class LocationByCoordinatesView(View):
     
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        weather_data = {}
-        weather_data["weather_data"] = get_7_day_forecast(data.get('latitude'), data.get('longitude'))
-        weather_data["location_info"] = get_location_from_coordinates(data.get('latitude'), data.get('longitude'))
-        return JsonResponse(weather_data)
+        latitude = data.get('latitude')
+        longitude = data.get('longitude')
+        city = self.request.session.get('selected_city', None)
 
-class UpdateWeatherDataView(View):
+        if city:
+            latitude, longitude = get_coordinates_from_city_name(city)
 
-    def post(self,request):
-        form = CityForm(request.POST)
-        if form.is_valid():
-            latitude,longitude = get_coordinates_from_city_name(form.cleaned_data['city'])
-            data = {}
-            data["weather_data"] = get_7_day_forecast(latitude, longitude)
-            data["location_info"] = get_location_from_coordinates(latitude, longitude)
-            return JsonResponse(data)
+        weather_data, location_info = get_weather_and_location(latitude, longitude,timeout=30)
+
+        response_data = {
+            "weather_data": weather_data,
+            "location_info": location_info
+        }
+
+        return JsonResponse(response_data)
 
 class WeatherDetailsView(View):
 
     def get(self, request, city, date):
+        # cache.clear()
+        cache_key = f"weather_data_{city}_{date}"
+        cached_data = cache.get(cache_key)
+
+        if cached_data:
+            return render(request, 'details.html', cached_data)
         
         latitude, longitude = get_coordinates_from_city_name(city)
-        
         date_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
-        previous_date = date_obj - datetime.timedelta(days=1)
-        next_date = date_obj + datetime.timedelta(days=1)
+        today_date = datetime.datetime.today().date()
+        request.session['selected_city'] = city 
+         
+        week_day_data = {}
+
+        for i in range(7):
+            day = today_date + datetime.timedelta(days=i)
+            week_day_data[day.strftime("%A")] = {
+                "date": day.strftime("%Y-%m-%d"),
+                "is_current_day": day == date_obj.date(),
+                "url": reverse('weather_Details', kwargs={'city': city, 'date': day.strftime('%Y-%m-%d')})
+            }
+            
         day_of_week = date_obj.strftime("%A")
         
         context = {
@@ -63,18 +107,8 @@ class WeatherDetailsView(View):
             'city_name': city,
             'date_obj': date_obj,
             'day_of_week': day_of_week,
+            'week_data': week_day_data,
             'hourly_data': get_hourly_data_by_date(latitude, longitude, date),
         }
-        
-        today = datetime.datetime.today().date()
-        last_day_of_week = today + datetime.timedelta(days=7)
-        
-        if previous_date.date() >= today:
-            context['previous_date'] = previous_date.strftime('%d-%m-%Y')
-            context["previous_date_url"] = reverse('weather_Details', kwargs={'city': city, 'date': previous_date.strftime('%Y-%m-%d')})
-        
-        if next_date.date() < last_day_of_week:
-            context['next_date'] = next_date.strftime('%d-%m-%Y')
-            context["next_date_url"] = reverse('weather_Details', kwargs={'city': city, 'date': next_date.strftime('%Y-%m-%d')})
-        
+        cache.set(cache_key, context, timeout=12 * 60 * 60)
         return render(request, 'details.html', context)

@@ -1,6 +1,5 @@
-import json , re
+import json 
 from channels.layers import get_channel_layer
-from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
@@ -15,7 +14,6 @@ class BaseWebsocketConsumer(AsyncWebsocketConsumer):
         try:
             self.id = self.scope.get("url_route", {}).get("kwargs", {}).get("city", None)
             self.group_name = f"{prefix}_{self.id}" if self.id else prefix
-            # self.group_name = self.sanitize_group_name(self.group_name)
             print('\033[91m'+'self.group_name: ' + '\033[92m', self.group_name)
             await self.channel_layer.group_add(self.group_name, self.channel_name)
             await self.accept()
@@ -34,12 +32,8 @@ class BaseWebsocketConsumer(AsyncWebsocketConsumer):
             print('\033[91m'+'Error in broadcast_message: ' + '\033[92m', e)
             await self.close()
 
-    def sanitize_group_name(self,group_name):
-        return re.sub(r'[^a-zA-Z0-9._-]', '_', group_name)
-
     async def receive(self, bytes_data=None, **kwargs):
         text_data = kwargs.get("text_data")
-        bytes_data = kwargs.get("bytes_data")  # noqa
         try:
             data = json.loads(text_data)
         except json.JSONDecodeError:

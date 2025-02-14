@@ -1,7 +1,16 @@
 var ws = null;  
 
+const closeWebSocket = () => {
+    if (ws) {
+        console.log("Closing WebSocket connection.");
+        ws.close();
+        ws = null;
+    }
+};
 
 const connectWebSocket = (city) => {
+
+    closeWebSocket();
     
     console.log("web socket city",city)
     
@@ -18,11 +27,6 @@ const connectWebSocket = (city) => {
         const citySelect = document.getElementById('id_city');
         const selectedCity = citySelect.value; 
         console.log("selectedCity:", selectedCity);
-
-        // if (selectedCity) {
-        //     console.log("No city selected, no update will occur.");
-        //     return;
-        // } 
 
         let maxTempEle = document.getElementById("0_max_temp_id");
         let windSpeed = document.getElementById("0_wind_speed");

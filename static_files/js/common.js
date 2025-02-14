@@ -60,72 +60,85 @@ function setWeatherData(weather_data){
         }
     }
 }
-
-
 function getUserLocation() {
+    var city = $('#id_city').val();
+
     let dotCount = 0;
     const cityElement = document.getElementById('city_id');
     const tempElement = document.getElementById('today_temp_id');
     const loadingText = "Finding Location";
-    
+
+    // Function to animate the loading text
     function animateDots() {
         dotCount++;
         if (dotCount > 3) dotCount = 1; 
         cityElement.textContent = loadingText + '.'.repeat(dotCount);
     }
 
+    // Start animation
     const animationInterval = setInterval(animateDots, 500); 
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var latitude = position.coords.latitude;
-            var longitude = position.coords.longitude;
-            console.log("latitude", latitude);
-            console.log("longitude", longitude);
-
-            fetch('/location/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken() 
-                },
-                body: JSON.stringify({
-                    latitude: latitude,
-                    longitude: longitude
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Location sent:', data);
+    // If a city is selected from the dropdown, use it
+    if (city) {
+        console.log("City selected:", city);
+        fetchLocationData({ city: city });
+    } else {
+        // If no city is selected, use geolocation
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+                console.log("Geolocation obtained:", latitude, longitude);
                 
-                clearInterval(animationInterval);
-
-                if (data.location_info) {
-                    cityElement.textContent = data.location_info.city; 
-                    connectWebSocket(data.location_info.city);
-                } else {
-                    console.error('City not found in the response.');
-                    cityElement.textContent = "Location Not Found";
-                }
-                if (data.weather_data) {
-                    setWeatherData(data.weather_data)
-                } else {
-                    console.error('Temperature data not found in the response.');
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+                fetchLocationData({ latitude: latitude, longitude: longitude });
+            }, function(error) {
+                console.error("Error getting geolocation:", error);
                 clearInterval(animationInterval);
                 cityElement.textContent = "Error Getting Location";
             });
-        }, function(error) {
-            console.error("Error getting geolocation:", error);
+        } else {
+            // Geolocation not supported
+            clearInterval(animationInterval);
+            cityElement.textContent = "Geolocation Not Supported";
+        }
+    }
+
+    // Function to send location data to the server and handle the response
+    function fetchLocationData(data) {
+        fetch('/location/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()  // Make sure to define getCSRFToken
+            },
+            body: JSON.stringify(data)  // Send either city or geolocation data
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Location sent:', data);
+            clearInterval(animationInterval);
+
+            if (data.location_info) {
+                cityElement.textContent = data.location_info.city; 
+                var city_name = data.location_info.city.replace(/\s+/g, '_'); 
+                console.log("city_name",city_name)
+                connectWebSocket(city_name);  // Assuming you have this function defined
+            } else {
+                console.error('City not found in the response.');
+                cityElement.textContent = "Location Not Found";
+            }
+
+            if (data.weather_data) {
+                setWeatherData(data.weather_data);  // Assuming you have this function defined
+            } else {
+                console.error('Temperature data not found in the response.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
             clearInterval(animationInterval);
             cityElement.textContent = "Error Getting Location";
         });
-    } else {
-        clearInterval(animationInterval);
-        cityElement.textContent = "Geolocation Not Supported";
     }
 }
 

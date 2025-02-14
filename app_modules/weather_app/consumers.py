@@ -1,4 +1,3 @@
-import json
 from app_modules.base.consumers import BaseWebsocketConsumer
 
 class WeatherConsumer(BaseWebsocketConsumer):

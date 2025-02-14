@@ -7,7 +7,6 @@
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #56CCF2, #2F80ED);
-    /* background: linear-gradient(135deg, #1b4654, #2F80ED);    */
     min-height: 100vh;
     color: white;
     overflow-x: hidden;
@@ -22,6 +21,9 @@ body {
     border-radius: 10px;
     margin-top: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 h1 {
@@ -32,7 +34,7 @@ h1 {
     background-color: transparent;
     border: 2px solid white;
     color: white;
-    padding: 8px 15px;
+    padding: 5px 10px;
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
@@ -46,9 +48,9 @@ h1 {
 .hourly-weather-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;  /* Ensures cards are evenly distributed */
+    justify-content: space-evenly;
     padding: 20px;
-    gap: 20px; /* Ensures consistent gap between all cards */
+    gap: 20px;
 }
 
 .hourly-weather-item {
@@ -72,7 +74,6 @@ h1 {
     height: 50px;
     margin-bottom: 10px;
     transition: transform 0.3s ease;
-    color: black;
 }
 
 .hourly-weather-item:hover img {
@@ -151,20 +152,15 @@ h1 {
 .modal-info {
     display: flex;
     flex-wrap: wrap;
-    /* Allows wrapping of items if they overflow */
     gap: 20px;
-    /* Adds space between items */
     justify-content: space-between;
-    /* Distributes items with space between them */
     font-size: 16px;
     color: #555;
     line-height: 1.6;
 }
 
-
 .modal-info .info-item {
     flex: 1 1 22%;
-    /* Make each info-item take up approximately 22% of the row */
     display: flex;
     flex-direction: column;
 }
@@ -190,22 +186,71 @@ h1 {
     height: 30px;
 }
 
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-    }
-    .hourly-weather-item {
-        width: calc(100% / 3 - 20px);
-    }
+.prev-btn {
+    background-color: #FF8A00; 
+    border-color: #FF8A00;
+    padding: 7px;
 }
 
+.prev-btn:hover {
+    background-color: rgba(255, 138, 0, 0.7);
+}
+
+/* Custom styles for Next button */
+.next-btn {
+    background-color: #2F80ED;
+    border-color: #2F80ED;
+    padding: 7px;
+}
+
+.next-btn:hover {
+    background-color: rgba(47, 128, 237, 0.7);
+}
+
+.week-data {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.day {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.day a:hover {
+    background-color: #f0f0f0;
+    color: black;
+    cursor: pointer;
+    color: #56CCF2;
+}
+
+.disabled {
+    color: gray !important;
+    cursor: not-allowed !important;
+    background-color: transparent;
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+    color: black !important;
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
-    .hourly-weather-list {
-        justify-content: center;
+    .hourly-weather-item {
+        width: calc(100% / 3 - 20px); /* 3 items per row */
     }
 
-    .hourly-weather-item {
-        width: 100px;
+    .hourly-weather-list {
+        justify-content: center;
     }
 
     .modal-content {
@@ -215,42 +260,6 @@ h1 {
 
 @media (max-width: 480px) {
     .hourly-weather-item {
-        width: calc(100% / 2 - 20px); 
+        width: calc(100% / 2 - 20px); /* 2 items per row */
     }
 }
-
-.prev-btn {
-    background-color: #FF8A00; 
-    border-color: #FF8A00;
-    padding: 7px;
-  }
-  
-  .prev-btn:hover {
-    background-color: rgba(255, 138, 0, 0.7);
-  }
-  
-  /* Custom styles for Next button */
-  .next-btn {
-    background-color: #2F80ED;
-    border-color: #2F80ED;
-    padding: 7px;
-  }
-  
-  .next-btn:hover {
-    background-color: rgba(47, 128, 237, 0.7);
-  }
-
-  .back-btn {
-    background-color: transparent;
-    border: 2px solid white;
-    color: white;
-    padding: 8px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .back-btn:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Customize color */
-  }
